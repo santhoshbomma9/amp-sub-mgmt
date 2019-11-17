@@ -113,7 +113,7 @@ def edit(subscriptionid):
     if app_config.Dimension_Data:
         dimensions = json.loads(app_config.Dimension_Data)
         filtered_dimensions_by_offer= dimensions[subscription['offerId']]
-        print(filtered_dimensions_by_offer)
+        app.logger.error(filtered_dimensions_by_offer)
     
     return render_template(constant.MANAGE_SUBSCRIPTION_PAGE, user=session["user"], subscription=subscription, available_plans=plans, dimension=filtered_dimensions_by_offer)
 
