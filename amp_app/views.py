@@ -3,6 +3,7 @@ import msal
 import json
 from flask import (
     Flask, jsonify, redirect, render_template, request, session, url_for, flash)
+import logging
 from flask_session import Session
 from . import amprepo, app_config, constant, utils, app
 from functools import wraps
@@ -13,6 +14,11 @@ app.config.from_object(app_config)
 Session(app)
 requested_url =''
 
+# https://medium.com/@trstringer/logging-flask-and-gunicorn-the-manageable-way-2e6f0b8beb2f
+if __name__ != '__main__':
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
 def login_required(f):
     @wraps(f)
