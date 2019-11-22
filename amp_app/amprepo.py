@@ -68,7 +68,8 @@ def send_dimension_usage(api_data):
 
 def get_sent_dimension_usage_by_suscription(subscription_id):
     dimension_usage_by_subscription = utils._get_ops_from_azure_table(app_config.DIMENSION_USAGE_STORAGE_TABLE_NAME, subscription_id)
-    return dimension_usage_by_subscription
+    dimension_usage_by_subscription_list = dimension_usage_by_subscription.items
+    return dimension_usage_by_subscription_list
 
 def save_sent_dimension_usage(api_data):
     utils._store_in_azure_table(app_config.DIMENSION_USAGE_STORAGE_TABLE_NAME, api_data)

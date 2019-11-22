@@ -183,6 +183,7 @@ def usage(subscriptionid):
         # save it in the table storage
         now = datetime.now()
         api_data['RowKey'] = now.strftime('%Y%m%d%H%M%S')
+        api_data['senttime'] = now.strftime('%Y-%m-%d %H:%M:%S')
         api_data['PartitionKey'] = subscriptionid
         amprepo.save_sent_dimension_usage(api_data)
 
