@@ -1,14 +1,17 @@
-import uuid
-import msal
-import json
 from flask import (
     Flask, jsonify, redirect, render_template, request, session, url_for, flash)
-import logging
+
 from flask_session import Session
 from . import amprepo, app_config, constant, utils, app
 from functools import wraps
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from datetime import datetime
+import pytz
+import logging
+import uuid
+import msal
+import json
 
 app.config.from_object(app_config)
 Session(app)
@@ -115,14 +118,7 @@ def edit(subscriptionid):
         else:
             flash(response.status_code, 'Update not successfully')
     
-    filtered_dimensions_by_offer = None
-    if app_config.Dimension_Data:
-        dimensions = json.loads(app_config.Dimension_Data)
-        filtered_dimensions_by_offer= dimensions.get(subscription['offerId'])
-        app.logger.error(filtered_dimensions_by_offer)
-    
     return render_template(constant.MANAGE_SUBSCRIPTION_PAGE, user=session["user"], subscription=subscription, available_plans=plans, dimension=filtered_dimensions_by_offer)
-
 
 
 
@@ -136,6 +132,66 @@ def operations(subscriptionid):
     sub_operations_by_isv = amprepo.get_sub_operations_isv(subscriptionid)
     return render_template(constant.SUBSCRIPTION_OPERATIONS_PAGE, user=session["user"], subsciptionname=subname, subscriptionid=subscriptionid, operations=sub_operations_by_subid, webhookops=sub_operations_by_webhook, isvops=sub_operations_by_isv)
 
+
+@app.route("/usage/<subscriptionid>", methods=['GET', 'POST'])
+@login_required
+@admin_login_required
+def usage(subscriptionid):
+    get_data = {} 
+    get_data['subname'] = request.args.get('subscriptionname')
+    get_data['planId'] = request.args.get('planid')
+    get_data['offerId'] = request.args.get('offerid')
+    
+    filtered_dimensions_by_offer = None
+    if app_config.Dimension_Data:
+        dimensions = json.loads(app_config.Dimension_Data)
+        filtered_dimensions_by_offer = dimensions.get(request.args.get('offerid'))
+        app.logger.error(filtered_dimensions_by_offer)
+    get_data['filtered_dimensions_by_offer'] = filtered_dimensions_by_offer
+    
+    if request.method == 'POST':
+        
+        api_data = {}
+        api_data['quantity'] = request.form.get('quantity')
+        api_data['selected_dimension'] = request.form.get('selecteddimension')
+        
+        month = request.form.get('mm')
+        year = request.form.get('yy')
+        day = request.form.get('dd')
+        hour = request.form.get('hh')
+        minute = request.form.get('min')
+        usage_datetime_str = f'{month}/{day}/{year} {hour}:{minute}'
+        usagetime = datetime.strptime(usage_datetime_str, '%m/%d/%Y %H:%M')
+        local_timezone = pytz.timezone('US/Pacific')
+        usagetime_tz = local_timezone.localize(usagetime, is_dst=None)
+        usagetime_tz_utc = usagetime_tz.astimezone(pytz.utc)
+
+        api_data['local_usage_datetime_object'] = usagetime_tz
+        api_data['utc_usage_datetime_object'] = usagetime_tz_utc
+
+
+        api_data['subname'] = get_data.get('subname')
+        api_data['planId'] = get_data.get('planId')
+        api_data['offerId'] = get_data.get('offerId')
+        api_data['subscriptionid'] = subscriptionid
+        
+        # send usage to api
+        response = amprepo.send_dimension_usage(api_data)
+        api_data['response'] = response.status_code
+        api_data['response_message'] = response.text
+        
+        # save it in the table storage
+        now = datetime.now()
+        api_data['RowKey'] = now.strftime('%Y%m%d%H%M%S')
+        api_data['PartitionKey'] = subscriptionid
+        amprepo.save_sent_dimension_usage(api_data)
+
+    # get the past sent usage pass it to display
+    get_data['existingUsage'] = amprepo.get_sent_dimension_usage_by_suscription(subscriptionid)
+
+    return render_template(constant.SEND_DIMENSION_USAGE_PAGE, user=session["user"], data=get_data)
+    
+    
 
 # todo change quantity
 # need to save the response

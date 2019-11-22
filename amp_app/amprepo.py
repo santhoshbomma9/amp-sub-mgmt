@@ -60,6 +60,18 @@ def update_subscriptionplan(subscription_id, plan_id):
             return redirect(url_for(constant.ERROR_PAGE), user=session["user"])
     return updateresponse
 
+def send_dimension_usage(api_data):
+    send_dimension_payload = f"{{ 'resourceId': '{api_data.get('subscriptionid')}', 'quantity': '{api_data.get('quantity')}', 'dimension': '{api_data.get('selected_dimension')}', 'effectiveStartTime': '{api_data.get('utc_usage_datetime_object')}', 'planId': '{api_data.get('planId')}' }}"
+    updateresponse = call_marketplace_api(constant.SEND_DIMENSION_USAGE_ENDPOINT, 'POST', send_dimension_payload)
+    return updateresponse
+
+
+def get_sent_dimension_usage_by_suscription(subscription_id):
+    dimension_usage_by_subscription = utils._get_ops_from_azure_table(app_config.DIMENSION_USAGE_STORAGE_TABLE_NAME, subscription_id)
+    return dimension_usage_by_subscription
+
+def save_sent_dimension_usage(api_data):
+    utils._store_in_azure_table(app_config.DIMENSION_USAGE_STORAGE_TABLE_NAME, api_data)
 
 def get_sub_operations(subscription_id):
     sub_operations_data = call_marketplace_api(constant.GET_SUBSCRIPTION_OPERATIONS_ENDPOINT(subscription_id))

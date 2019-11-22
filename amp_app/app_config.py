@@ -47,6 +47,7 @@ if not WEBHOOK_OPS_STORAGE_TABLE_NAME:
 ISV_OPS_STORAGE_TABLE_NAME = os.getenv('ISV_OPS_STORAGE_TABLE_NAME')
 if not ISV_OPS_STORAGE_TABLE_NAME:
      raise ValueError("Need to define ISV_OPS_STORAGE_TABLE_NAME environment variable")
+DIMENSION_USAGE_STORAGE_TABLE_NAME = os.getenv('DIMENSION_USAGE_STORAGE_TABLE_NAME')
 
 HTTP_SCHEME = os.getenv('HTTP_SCHEME')
 if not HTTP_SCHEME:
@@ -71,4 +72,5 @@ SCOPE = [""]
 AUTHORITY = "https://login.microsoftonline.com/"
 MARKETPLACEAPI_ENDPOINT = 'https://marketplaceapi.microsoft.com/api/saas/subscriptions/'
 MARKETPLACEAPI_OPERATIONS_ENDPOINT = 'https://marketplaceapi.microsoft.com/api/saas/operations'
+MARKETPLACEAPI_USAGE_ENDPOINT = 'https://marketplaceapi.microsoft.com/api/usageEvent'
 MARKETPLACEAPI_RESOURCE = "62d94f6c-d599-489b-a797-3e10e42fbe22"

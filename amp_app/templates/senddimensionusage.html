@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>Send Dimension Usage</h1>
+    <h3>Subscription Name: {{data.subname}}</h3>
+</div>
+
+<div class="row">
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+</div>
+
+{{data}}
+<form method="post" style="font-size: 20px;">
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Plan Id:</label>
+        <input type="text" class="form-control" id="planId" name="planId" placeholder="{{ data.planId }}" disabled>
+    </div>
+        
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Offer Id:</label>
+        <input type="text" class="form-control" id="offerId" name="offerId" placeholder="{{ data.offerId }}" disabled>
+    </div>
+        
+        
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Quantity:</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity" min="1" max="10">
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Select Dimension:</label>
+        <select name="selecteddimension" class="form-control" width="300px">
+            {% for dim in data.filtered_dimensions_by_offer %}
+                <option value="{{ dim }}">{{ dim }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Usage Start DateTime:</label>
+        <table>
+            <tr>
+                <td><input type="number" class="form-control" name="yy" id="yy" placeholder="YY" min="2019" max="2030"></td>
+                <td><input type="number" class="form-control" name="mm" id="mm" placeholder="MM" min="1" max="12"></td>
+                <td><input type="number" class="form-control" name="dd" id="dd" placeholder="DD" min="1" max="31"></td>
+                <td><input type="number" class="form-control" name="hh" id="hh" placeholder="HH" min="0" max="23"></td>
+                <td><input type="number" class="form-control" name="min" id="min" placeholder="MM" min="0" max="59"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="form-group row">
+        <button type="submit" class="btn btn-primary" name="sendusage" value="update">Send Usage</button>
+    </div>  
+</form>
+
+
+{% endblock %}

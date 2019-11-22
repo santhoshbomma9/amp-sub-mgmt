@@ -35,12 +35,16 @@
                     <td>{{ item['id'] }}</td>
                     <td>{{ item['allowedCustomerOperations'] }}</td>
                     <td class="text-center">
-                        <a href={{ url_for('edit', subscriptionid=item['id']) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true">
+                        <a href={{ url_for('edit', subscriptionid=item['id'] ) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true">
                             Edit </a>
                     </td>
                     <td  class="text-center">
-                        <a href={{ url_for('operations', subscriptionid=item['id'], subscriptionname=item['name']) }} class="btn btn-primary btn-sm active">
+                        <a href={{ url_for('operations', subscriptionid=item['id'], subscriptionname=item['name'] ) }} class="btn btn-primary btn-sm active">
                             Operations</a>
+                    </td>
+                    <td  class="text-center">
+                        <a href={{ url_for('usage', subscriptionid=item['id'], subscriptionname=item['name'], offerid=item['offerId'], planid=item['planId'] ) }} class="btn btn-primary btn-sm active">
+                            Dim. Usage</a>
                     </td>
                 </tr>
             {% endfor %}
