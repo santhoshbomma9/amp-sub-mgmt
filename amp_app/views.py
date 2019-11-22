@@ -118,7 +118,7 @@ def edit(subscriptionid):
         else:
             flash(response.status_code, 'Update not successfully')
     
-    return render_template(constant.MANAGE_SUBSCRIPTION_PAGE, user=session["user"], subscription=subscription, available_plans=plans, dimension=filtered_dimensions_by_offer)
+    return render_template(constant.MANAGE_SUBSCRIPTION_PAGE, user=session["user"], subscription=subscription, available_plans=plans)
 
 
 
