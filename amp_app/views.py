@@ -15,7 +15,7 @@ import json
 
 app.config.from_object(app_config)
 Session(app)
-requested_url =''
+requested_url = ''
 
 # https://medium.com/@trstringer/logging-flask-and-gunicorn-the-manageable-way-2e6f0b8beb2f
 if __name__ != '__main__':
@@ -35,20 +35,20 @@ def login_required(f):
 def admin_login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not session.get("isadmin") or session.get("isadmin") == False:
-            return render_template(constant.ERROR_PAGE, user=session["user"]) 
+        if not session.get("isadmin"):
+            return render_template(constant._404_PAGE, user=session["user"])
         return f(*args, **kwargs)
     return decorated_function
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template(constant._404_PAGE), 404
 
 
 @app.errorhandler(500)
 def internal_error(e):
-    return render_template('500.html'), 500
+    return render_template(constant._500_PAGE), 500
 
 
 @app.route("/")
@@ -102,7 +102,7 @@ def edit(subscriptionid):
     plans = amprepo.get_availableplans(subscriptionid)
 
     if request.method == 'POST':
-        selected_subscription = request.form['subscription_id']
+        selected_subscription = subscriptionid
     
         if 'activate' in request.form:
             selected_plan = request.form['subscription_plan_id']
@@ -168,8 +168,6 @@ def usage(subscriptionid):
 
         api_data['local_usage_datetime_object'] = usagetime_tz
         api_data['utc_usage_datetime_object'] = usagetime_tz_utc
-
-
         api_data['subname'] = get_data.get('subname')
         api_data['planId'] = get_data.get('planId')
         api_data['offerId'] = get_data.get('offerId')
@@ -191,7 +189,6 @@ def usage(subscriptionid):
     get_data['existingUsage'] = amprepo.get_sent_dimension_usage_by_suscription(subscriptionid)
 
     return render_template(constant.SEND_DIMENSION_USAGE_PAGE, user=session["user"], data=get_data)
-    
     
 
 # todo change quantity
@@ -277,6 +274,7 @@ def landingpage():
 def privacy():
     return 'This is a sample privacy policy'
 
+
 @app.route("/support", methods=['GET', 'POST'])
 @login_required
 def support():
@@ -312,8 +310,9 @@ def logout():
 @app.before_request
 def before_request_func():
     global requested_url
-    if not session.get("user") and request.endpoint != 'authorized' and request.endpoint != 'login' and request.endpoint != 'webhook':
+    auth_endpoint_list = ['authorized', 'login', 'webhook']
+    if not session.get("user") and request.endpoint not in auth_endpoint_list:
         requested_url = request.url
 
-    if session.get("user") and request.endpoint != 'authorized' and request.endpoint != 'login' and request.endpoint != 'webhook':
+    if session.get("user") and request.endpoint not in auth_endpoint_list:
         requested_url = None
