@@ -104,7 +104,7 @@ def edit(subscriptionid):
 
     if request.method == 'POST':
         selected_subscription = subscriptionid
-    
+ 
         if 'activate' in request.form:
             selected_plan = request.form['subscription_plan_id']
             response = amprepo.activate_subscriptionplan(selected_subscription, selected_plan)
