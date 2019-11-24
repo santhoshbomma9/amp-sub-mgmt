@@ -114,10 +114,10 @@ def edit(subscriptionid):
         else:
             return redirect(url_for(constant.ERROR_PAGE))
 
-        if response.status_code == 202 or response.status_code:
-            flash(f'{response.status_code} Update successfully')
+        if response.status_code:
+            flash(f'{response.status_code}  {response.text}')
         else:
-            flash(response.status_code, 'Update not successfully')
+            flash('No response, update not successfully')
     
     return render_template(constant.MANAGE_SUBSCRIPTION_PAGE, user=session["user"], subscription=subscription, available_plans=plans)
 
@@ -172,6 +172,12 @@ def usage(subscriptionid):
 
         # send usage to api
         response = amprepo.send_dimension_usage(api_data)
+        
+        if response.status_code:
+            flash(f'{response.status_code}  {response.text}')
+        else:
+            flash('No response, update not successfully')
+
         api_data['response'] = response.status_code
         api_data['response_message'] = response.text
 
@@ -207,10 +213,11 @@ def updateoperation(operationid):
             status = 'Failure'
 
         response = amprepo.update_sub_operation(subid, operationid, planid, quantity, status)
-        if response.status_code and response.status_code == 200:
-            flash(f'{response.status_code} Patch successfull')
+
+        if response.status_code:
+            flash(f'{response.status_code}  {response.text}')
         else:
-            flash(f'{response.text} Update not successfull')
+            flash('No response, update not successfully')
 
     return render_template("suboperationmanage.html", user=session["user"], operationid=operationid,subid=subid, planid=planid, quantity=quantity, subsciptionname=subsciptionname)
 
@@ -235,34 +242,39 @@ def webhook():
 @login_required
 def landingpage():
 
+    token = request.args.get('token')
+    subscription = amprepo.get_subscriptionid_by_token(token)
+    if not token or 'id' not in subscription:
+        return render_template(constant.ERROR_PAGE, user=session["user"])
+    subscription_data = amprepo.get_subscription(subscription['id'])
+    plans = amprepo.get_availableplans(subscription['id'])
+
     if request.method == 'POST':
         selected_subscription = request.form['subscription_id']
-        action = ''
+        subject = ''
+        email_body = ''
+        id_string = 'id'
         if 'activate' in request.form:
             selected_plan = request.form['subscription_plan_id']
-            action = 'ACTIVATE'
+            subject = f'New activation request for {subscription_data.get(id_string)}'
+            email_body = utils._get_activate_email_body(subscription_data)
         elif 'update' in request.form:
             selected_plan = request.form['selectedplan']
-            action = 'UPDATE'
+            subject = f'UPDATE request for {subscription_data.get(id_string)}'
+            email_body = utils._get_update_email_body(subscription_data, selected_plan)
 
+        email_body += "<br> Go to <a href=" + url_for('login', _external=True) + ">Dashboard</a>"
         message = Mail(
             from_email=app_config.SENDGRID_FROM_EMAIL,
             to_emails=app_config.SENDGRID_TO_EMAIL,
-            subject='Sending with Twilio SendGrid is Fun',
-            html_content=f'<strong>and easy {selected_subscription} {selected_plan} {action} to do anywhere, even with Python</strong>')
+            subject=subject,
+            html_content=email_body)
         try:
             sendgrid_client = SendGridAPIClient(app_config.SENDGRID_APIKEY)
             response = sendgrid_client.send(message)
             flash(f'{response.status_code} Message sent successfully')
         except Exception as e:
             flash(e.message, 'error')
-
-    token = request.args.get('token')
-    subscription = amprepo.get_subscriptionid_by_token(token)
-    if not token or 'id' not in subscription:
-        return render_template(constant.ERROR_PAGE, user=session["user"])  
-    subscription_data = amprepo.get_subscription(subscription['id'])
-    plans = amprepo.get_availableplans(subscription['id'])
 
     return render_template(constant.CUSTOMER_MANAGE_SUBSCRIPTION_PAGE, user=session["user"], subscription=subscription_data, available_plans=plans)
 
@@ -306,6 +318,7 @@ def logout():
 @app.before_request
 def before_request_func():
     global requested_url
+    app.logger.info('Requested Endpoint ' +request.endpoint)
     auth_endpoint_list = ['authorized', 'login', 'webhook']
     if not session.get("user") and request.endpoint not in auth_endpoint_list:
         requested_url = request.url
