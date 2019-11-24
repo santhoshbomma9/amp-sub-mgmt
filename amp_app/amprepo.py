@@ -1,4 +1,3 @@
-import logging
 import re
 import uuid
 import requests
@@ -38,7 +37,7 @@ def activate_subscriptionplan(subscription_id, plan_id):
 def update_subscriptionplan(subscription_id, plan_id):
     request_plan_payload = f"{{'planId': '{plan_id}'}}"
     updateresponse = call_marketplace_api(constant.UPDATE_SUBSCRIPTION_ENDPOINT(subscription_id), 'PATCH', request_plan_payload)
-    
+
     updateresponseheaders = updateresponse.headers
     updateresponsestatuscode = updateresponse.status_code
     if 'Operation-Location' in updateresponseheaders and updateresponsestatuscode == 202:
@@ -60,6 +59,7 @@ def update_subscriptionplan(subscription_id, plan_id):
             return redirect(url_for(constant.ERROR_PAGE), user=session["user"])
     return updateresponse
 
+
 def send_dimension_usage(api_data):
     send_dimension_payload = f"{{ 'resourceId': '{api_data.get('subscriptionid')}', 'quantity': '{api_data.get('quantity')}', 'dimension': '{api_data.get('selected_dimension')}', 'effectiveStartTime': '{api_data.get('utc_usage_datetime_object')}', 'planId': '{api_data.get('planId')}' }}"
     updateresponse = call_marketplace_api(constant.SEND_DIMENSION_USAGE_ENDPOINT, 'POST', send_dimension_payload)
@@ -71,8 +71,10 @@ def get_sent_dimension_usage_by_suscription(subscription_id):
     dimension_usage_by_subscription_list = dimension_usage_by_subscription.items
     return dimension_usage_by_subscription_list
 
+
 def save_sent_dimension_usage(api_data):
     utils._store_in_azure_table(app_config.DIMENSION_USAGE_STORAGE_TABLE_NAME, api_data)
+
 
 def get_sub_operations(subscription_id):
     sub_operations_data = call_marketplace_api(constant.GET_SUBSCRIPTION_OPERATIONS_ENDPOINT(subscription_id))

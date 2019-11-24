@@ -1,4 +1,4 @@
-""" 
+"""
 In this sample, the Flask app object is contained within the amp_app *module*;
 that is, amp_app contains an __init__.py along with relative imports. Because
 of this structure, a file like webapp.py cannot be run directly as the startup

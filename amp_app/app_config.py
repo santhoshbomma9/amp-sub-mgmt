@@ -16,53 +16,53 @@ load_dotenv(dotenv_path)
 # Application login
 TENANT_ID = os.getenv('TENANT_ID')
 if not TENANT_ID:
-     raise ValueError("Need to define TENANT_ID environment variable")
+    raise ValueError("Need to define TENANT_ID environment variable")
 CLIENT_ID = os.getenv('CLIENT_ID')
 if not CLIENT_ID:
-     raise ValueError("Need to define CLIENT_ID environment variable")
+    raise ValueError("Need to define CLIENT_ID environment variable")
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 if not CLIENT_SECRET:
-     raise ValueError("Need to define CLIENT_SECRET environment variable")
+    raise ValueError("Need to define CLIENT_SECRET environment variable")
 
 # For calling the market place api
 MARKETPLACEAPI_TENANTID = os.getenv('MARKETPLACEAPI_TENANTID')
 if not MARKETPLACEAPI_TENANTID:
-     raise ValueError("Need to define MARKETPLACEAPI_TENANTID environment variable")
+    raise ValueError("Need to define MARKETPLACEAPI_TENANTID environment variable")
 MARKETPLACEAPI_CLIENT_ID = os.getenv('MARKETPLACEAPI_CLIENT_ID')
 if not MARKETPLACEAPI_CLIENT_ID:
-     raise ValueError("Need to define MARKETPLACEAPI_CLIENT_ID environment variable")
+    raise ValueError("Need to define MARKETPLACEAPI_CLIENT_ID environment variable")
 MARKETPLACEAPI_CLIENT_SECRET = os.getenv('MARKETPLACEAPI_CLIENT_SECRET')
 if not MARKETPLACEAPI_CLIENT_SECRET:
-     raise ValueError("Need to define MARKETPLACEAPI_CLIENT_SECRET environment variable")
+    raise ValueError("Need to define MARKETPLACEAPI_CLIENT_SECRET environment variable")
 MARKETPLACEAPI_API_VERSION = os.getenv('MARKETPLACEAPI_API_VERSION')
 if not MARKETPLACEAPI_API_VERSION:
-     raise ValueError("Need to define MARKETPLACEAPI_API_VERSION environment variable")
+    raise ValueError("Need to define MARKETPLACEAPI_API_VERSION environment variable")
 
 STORAGE_CONNECTION_STRING = os.getenv('STORAGE_CONNECTION_STRING')
 if not STORAGE_CONNECTION_STRING:
-     raise ValueError("Need to define STORAGE_CONNECTION_STRING environment variable")
+    raise ValueError("Need to define STORAGE_CONNECTION_STRING environment variable")
 WEBHOOK_OPS_STORAGE_TABLE_NAME = os.getenv('WEBHOOK_OPS_STORAGE_TABLE_NAME')
 if not WEBHOOK_OPS_STORAGE_TABLE_NAME:
-     raise ValueError("Need to define WEBHOOK_OPS_STORAGE_TABLE_NAME environment variable")
+    raise ValueError("Need to define WEBHOOK_OPS_STORAGE_TABLE_NAME environment variable")
 ISV_OPS_STORAGE_TABLE_NAME = os.getenv('ISV_OPS_STORAGE_TABLE_NAME')
 if not ISV_OPS_STORAGE_TABLE_NAME:
-     raise ValueError("Need to define ISV_OPS_STORAGE_TABLE_NAME environment variable")
+    raise ValueError("Need to define ISV_OPS_STORAGE_TABLE_NAME environment variable")
 DIMENSION_USAGE_STORAGE_TABLE_NAME = os.getenv('DIMENSION_USAGE_STORAGE_TABLE_NAME')
 
 HTTP_SCHEME = os.getenv('HTTP_SCHEME')
 if not HTTP_SCHEME:
-     raise ValueError("Need to define HTTP_SCHEME environment variable")
+    raise ValueError("Need to define HTTP_SCHEME environment variable")
 
 
 SENDGRID_APIKEY = os.getenv('SENDGRID_APIKEY')
 if not SENDGRID_APIKEY:
-     raise ValueError("Need to define SENDGRID_APIKEY environment variable")
+    raise ValueError("Need to define SENDGRID_APIKEY environment variable")
 SENDGRID_FROM_EMAIL = os.getenv('SENDGRID_FROM_EMAIL')
 if not SENDGRID_FROM_EMAIL:
-     raise ValueError("Need to define SENDGRID_FROM_EMAIL environment variable")
+    raise ValueError("Need to define SENDGRID_FROM_EMAIL environment variable")
 SENDGRID_TO_EMAIL = os.getenv('SENDGRID_TO_EMAIL')
 if not SENDGRID_TO_EMAIL:
-     raise ValueError("Need to define SENDGRID_TO_EMAIL environment variable")
+    raise ValueError("Need to define SENDGRID_TO_EMAIL environment variable")
 
 Dimension_Data = os.getenv('Dimension_Data')
 

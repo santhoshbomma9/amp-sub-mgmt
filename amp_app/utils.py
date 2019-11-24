@@ -66,7 +66,7 @@ def _validate_jwt_token(access_token):
         # jwks_uri
         # res = requests.get('https://login.microsoftonline.com/common/.well-known/openid-configuration')
         # jwk_uri = res.json()['jwks_uri']
-        jwk_uri="https://login.windows.net/common/discovery/keys"
+        jwk_uri = "https://login.windows.net/common/discovery/keys"
         res = requests.get(jwk_uri)
         jwk_keys = res.json()
         x5c = None
@@ -91,7 +91,7 @@ def _validate_jwt_token(access_token):
                 algorithms='RS256',
                 audience=app_id,
                 issuer=issuer)
-    except Exception as e: 
+    except Exception as e:
         return f"Authentication error! {e}", 500
 
 

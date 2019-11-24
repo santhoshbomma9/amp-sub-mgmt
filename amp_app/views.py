@@ -23,6 +23,7 @@ if __name__ != '__main__':
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
 
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -141,20 +142,16 @@ def usage(subscriptionid):
     get_data['subname'] = request.args.get('subscriptionname')
     get_data['planId'] = request.args.get('planid')
     get_data['offerId'] = request.args.get('offerid')
-    
     filtered_dimensions_by_offer = None
     if app_config.Dimension_Data:
         dimensions = json.loads(app_config.Dimension_Data)
         filtered_dimensions_by_offer = dimensions.get(request.args.get('offerid'))
         app.logger.error(filtered_dimensions_by_offer)
     get_data['filtered_dimensions_by_offer'] = filtered_dimensions_by_offer
-    
     if request.method == 'POST':
-        
         api_data = {}
         api_data['quantity'] = request.form.get('quantity')
         api_data['selected_dimension'] = request.form.get('selecteddimension')
-        
         month = request.form.get('mm')
         year = request.form.get('yy')
         day = request.form.get('dd')
@@ -172,12 +169,12 @@ def usage(subscriptionid):
         api_data['planId'] = get_data.get('planId')
         api_data['offerId'] = get_data.get('offerId')
         api_data['subscriptionid'] = subscriptionid
-        
+
         # send usage to api
         response = amprepo.send_dimension_usage(api_data)
         api_data['response'] = response.status_code
         api_data['response_message'] = response.text
-        
+
         # save it in the table storage
         now = datetime.now()
         api_data['RowKey'] = now.strftime('%Y%m%d%H%M%S')
@@ -189,7 +186,7 @@ def usage(subscriptionid):
     get_data['existingUsage'] = amprepo.get_sent_dimension_usage_by_suscription(subscriptionid)
 
     return render_template(constant.SEND_DIMENSION_USAGE_PAGE, user=session["user"], data=get_data)
-    
+
 
 # todo change quantity
 # need to save the response
@@ -247,7 +244,7 @@ def landingpage():
         elif 'update' in request.form:
             selected_plan = request.form['selectedplan']
             action = 'UPDATE'
-        
+
         message = Mail(
             from_email=app_config.SENDGRID_FROM_EMAIL,
             to_emails=app_config.SENDGRID_TO_EMAIL,
@@ -266,7 +263,7 @@ def landingpage():
         return render_template(constant.ERROR_PAGE, user=session["user"])  
     subscription_data = amprepo.get_subscription(subscription['id'])
     plans = amprepo.get_availableplans(subscription['id'])
-    
+
     return render_template(constant.CUSTOMER_MANAGE_SUBSCRIPTION_PAGE, user=session["user"], subscription=subscription_data, available_plans=plans)
 
 
@@ -281,7 +278,7 @@ def support():
     if request.method == 'POST':
         replyEmail = request.form['email']
         question = request.form['message']
-        
+
         message = Mail(
             from_email=app_config.SENDGRID_FROM_EMAIL,
             to_emails=app_config.SENDGRID_TO_EMAIL,
@@ -293,7 +290,6 @@ def support():
             flash(f'{response.status_code} Message sent successfully')
         except Exception as e:
             flash(e.message, 'error')
-    
 
     return render_template('support.html', user=session["user"])
 
@@ -302,7 +298,7 @@ def support():
 def logout():
     session.clear()  # Wipe out user and its token cache from session
     return redirect(  # Also logout from your tenant's web session
-        #app_config.AUTHORITY + "/" + app_config.TENANT_ID + "/oauth2/v2.0/logout" +
+        # app_config.AUTHORITY + "/" + app_config.TENANT_ID + "/oauth2/v2.0/logout" +
         app_config.AUTHORITY + "/common/oauth2/v2.0/logout" +
         "?post_logout_redirect_uri=" + url_for("login", _external=True, _scheme=app_config.HTTP_SCHEME))
 

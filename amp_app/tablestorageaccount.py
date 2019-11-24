@@ -1,5 +1,4 @@
-from azure.storage import SharedAccessSignature
-from azure.storage.table import Entity, TableService
+from azure.storage.table import TableService
 
 
 class TableStorageAccount(object):
@@ -26,7 +25,7 @@ class TableStorageAccount(object):
         self.account_name = account_name
         self.connection_string = connection_string
         self.sas_token = sas_token
-        self.endpoint_suffix = endpoint_suffix	
+        self.endpoint_suffix = endpoint_suffix
         self.is_emulated = is_emulated
 
     def create_table_service(self):
@@ -36,11 +35,11 @@ class TableStorageAccount(object):
         :return: A service object.
         :rtype: :class:`~azure.storage.table.tableservice.TableService`
         '''
-        return TableService(account_name = self.account_name,
+        return TableService(account_name=self.account_name,
                             sas_token=self.sas_token,
                             endpoint_suffix=self.endpoint_suffix, 
-                            connection_string= self.connection_string,
+                            connection_string=self.connection_string,
                             is_emulated=self.is_emulated)
 
     def is_azure_cosmosdb_table(self):
-        return self.connection_string != None and "table.cosmosdb" in self.connection_string
+        return self.connection_string is not None and "table.cosmosdb" in self.connection_string
