@@ -16,17 +16,27 @@ As this sample is a requirement for creating a SaaS offer, we will only talk abo
 You would need to follow [SaaS offer checklist here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/offer-creation-checklist) to create one. 
 
 On a high level below are things we need to be addressed to publish and sell a SaaS offer.
-1. Complete Tax profile and Payout (one-time activity, just in case if not already done so) 
-2. Marketing and Plan/Pricing model (how you want to display your offer and how you want to price it)
+1. Complete Tax profile and Payout
+2. Marketing and Plan/Pricing model
 3. Technical requirements (An application to interact between the subscriber/customer, company/publisher and Azure Marketplace - This is exactly what this sample is for)
 
 #### Steps Explanation
 
-1. Complete Tax profile and Payout 
-This is a one-time activity, just in case if not already done so. Basically, how SaaS offer works is
-- Put your offer in Azure Marketplace
-- Customer buys the offer 
-- Microsoft bills the customer as per the selected billing term by customer
-- Microsoft pays out to the Company/ISV
+1. Complete Tax profile and Payout -  This is a one-time activity, just in case if not already done so. Basically, how SaaS offer works is
+    - Put your offer in Azure Marketplace
+    - Customer buys the offer 
+    - Microsoft bills the customer as per the selected billing term by customer
+    - Microsoft pays out to the Company/ISV
+
+
+2. Marketing and Plan/Pricing model 
+    - You will need to provide information to go on your offer page. This includes descirption, support links, logos, screenshots and videos. There are few options on how you would want to sell your offer by creating different plans eg. 
+        - flat rate + monthly/yearly + (optional meter_billing or 30 day free trial)
+        - per user + monthly/yearly + (optional 30 day free trial)
+
+3. Technical requirements 
+
+An application to interact between the subscriber/customer, company/publisher and Azure Marketplace - This is exactly what this sample is for
+
 
 ## About the sample
