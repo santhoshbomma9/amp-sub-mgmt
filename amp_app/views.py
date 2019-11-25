@@ -172,7 +172,7 @@ def usage(subscriptionid):
 
         # send usage to api
         response = amprepo.send_dimension_usage(api_data)
-        
+
         if response.status_code:
             flash(f'{response.status_code}  {response.text}')
         else:
