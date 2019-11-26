@@ -23,10 +23,11 @@ On a high level below are things we need to be addressed to publish and sell a S
 #### Steps Explanation
 
 1. Complete Tax profile and Payout -  This is a one-time activity, just in case if not already done so. Basically, how SaaS offer works is
-    - Put your offer in Azure Marketplace
+    - Publish your offer in Azure Marketplace
     - Customer buys the offer 
-    - Microsoft bills the customer as per the selected billing term by customer
+    - Microsoft bills the customer as per their selected billing term
     - Microsoft pays out to the Company/ISV
+  For microsoft to pay the publisher, it needs 
 
 
 2. Marketing and Plan/Pricing model 
@@ -34,9 +35,27 @@ On a high level below are things we need to be addressed to publish and sell a S
         - flat rate + monthly/yearly + (optional meter_billing or 30 day free trial)
         - per user + monthly/yearly + (optional 30 day free trial)
 
-3. Technical requirements 
+3. Technical requirements
 
-An application to interact between the subscriber/customer, company/publisher and Azure Marketplace - This is exactly what this sample is for
+    - Azure Ad application registration - This is a single tenant app and the details(TenantId and AppId) are used in the Technical configuration section when creating a SaaS Offer. You will need this to get the [marketplace authorization token](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-registration#get-a-token-based-on-the-azure-ad-app) and use in it the authorization header for calling the [Marketplace fulfilment api](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2), be it from Landing page or Dashboard admin page. This token is like the password to call the [Marketplace fulfilment api](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2)
+
+    - Landing page - A [multi-tenant authenticated webpage](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-convert-app-to-be-multi-tenant) for customer to send email of managing their subscription to the Publisher Company Ops team.
+        1. Customer would be redirected to landing page along with query string (e.g ?token=121212121), this token is kind of what represents that customers subscirption
+        2. Customer login's to the landing page(using multi-tenant authentication flow), customer is authenticated
+        3. After login:
+        4. Get JWT token
+        5. Page calls the [Marketplace API Resolve endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#resolve-a-subscription) (using marketplace auth jwt token and query string token) which will respond with a subscription Id.
+        6. Then, Page calls the Get on [Subscription endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#gethttpsmarketplaceapimicrosoftcomapisaassubscriptionsapi-versionapiversion) passing the subscription Id to get more details/status of that subscription
+        7. Submit button on the landing page will send an email to the Publisher Company Ops team to activate, update or cancel the subscription.
+    
+    - Dashboard Admin page
+    
+    - Webhook
+
+
+
+An application to interact between the Customer, Company and Azure Marketplace - This is exactly what this sample is for.
+
 
 
 ## About the sample
