@@ -43,7 +43,7 @@ On a high level below are things we need to be addressed to publish and sell a S
         1. Customer would be redirected to landing page along with query string (e.g ?token=121212121), this token is kind of what represents that customers subscirption
         2. Customer login's to the landing page(using multi-tenant authentication flow), customer is authenticated
         3. After login:
-        4. Get JWT token
+        4. [Get JWT token](https://github.com/santhoshbomma9/amp-sub-mgmt/edit/master/README.md#L40)
         5. Page calls the [Marketplace API Resolve endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#resolve-a-subscription) (using marketplace auth jwt token and query string token) which will respond with a subscription Id.
         6. Then, Page calls the Get on [Subscription endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#gethttpsmarketplaceapimicrosoftcomapisaassubscriptionsapi-versionapiversion) passing the subscription Id to get more details/status of that subscription
         7. Submit button on the landing page will send an email to the Publisher Company Ops team to activate, update or cancel the subscription.
