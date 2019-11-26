@@ -44,11 +44,11 @@ On a high level below are things we need to be addressed to publish and sell a S
         2. Customer login's to the landing page(using multi-tenant authentication flow), customer is authenticated
         3. After login:
         4. Get JWT token as per the first technical requirement above.
-        5. Page calls the [Marketplace API Resolve endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#resolve-a-subscription) (using marketplace auth jwt token(from #3) and query string token(#1)) which will respond with a subscription Id.
+        5. Page calls the [Marketplace API Resolve endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#resolve-a-subscription) (using marketplace auth jwt token(from #4) and query string token(#1)) which will respond with a subscription Id.
         6. Then, Page calls the Get on [Subscription endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#gethttpsmarketplaceapimicrosoftcomapisaassubscriptionsapi-versionapiversion) passing the subscription Id to get more details/status of that subscription
         7. Submit button on the landing page will send an email to the Publisher Company Ops team to activate, update or cancel the subscription.
     
-    - Webhook -  Webhook is an url endpoint, where Azure Marketplace can call the publisher to inform the activies performed by the customer outside of landing page. This [activites are listed here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#implementing-a-webhook-on-the-saas-service). An example flow for delete would look like below
+    - Webhook -  Webhook is an url endpoint provided by the publisher, where Azure Marketplace can call the publisher to inform the activies/actions performed by the customer outside of landing page. This [activites/actions are listed here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#implementing-a-webhook-on-the-saas-service). An example flow for delete would look like below
         1. Customer deletes SaaS offer
         2. Publisher Webhook gets a notification
         3. Validate the AUTH token on that request
@@ -56,19 +56,16 @@ On a high level below are things we need to be addressed to publish and sell a S
         4. Perform the required action on your solution you have provided to the customer(In this case would be blocking the customer access to your SaaS solution)
         5. Send a PATCH request back to [Marketplace Operation API](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#operations-api) with Success/Failure status 
            
-    - Dashboard Admin page
-    Dashboard admin page is used to manage all the your cusotmers subscriptions. Intent of the customer activates can come through below ways
-        1. Email from customer to ACTIVATE a subscirption
-        2. Email from customer to CHANGE PLAN on a subscirption
-        3. Email from customer to UNSUBSCRIBE
-        4. WEBHOOK(the )
+    - Dashboard Admin page - Dashboard admin page is for your Ops team to manage all the your customers subscriptions. Publisher can list, get, update/patch, delete, check the status of an operation, view opertations from webhook, patch operations and send usage of metered dimension for a subscirption. Intent of the customer activates can come through below ways
+        1. LANDING PAGE Email from customer to ACTIVATE a subscirption
+        2. LANDING PAGE Email from customer to CHANGE PLAN on a subscirption
+        3. LANDING PAGE Email from customer to UNSUBSCRIBE
+        4. WEBHOOK notifications
+        5. Customer using Metered dimensions
+        
+       Publisher would 
+       - Perform the actions on their SaaS solution accordingly 
+       - Make changes to the customers subscription on the dashboard admin page.
+        
     
-    
-
-
-
-An application to interact between the Customer, Company and Azure Marketplace - This is exactly what this sample is for.
-
-
-
 ## About the sample
