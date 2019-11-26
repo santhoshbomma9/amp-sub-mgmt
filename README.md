@@ -43,14 +43,27 @@ On a high level below are things we need to be addressed to publish and sell a S
         1. Customer would be redirected to landing page along with query string (e.g ?token=121212121), this token is kind of what represents that customers subscirption
         2. Customer login's to the landing page(using multi-tenant authentication flow), customer is authenticated
         3. After login:
-        4. [Get JWT token](https://github.com/santhoshbomma9/amp-sub-mgmt/edit/master/README.md#L40)
-        5. Page calls the [Marketplace API Resolve endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#resolve-a-subscription) (using marketplace auth jwt token and query string token) which will respond with a subscription Id.
+        4. Get JWT token as per the first technical requirement above.
+        5. Page calls the [Marketplace API Resolve endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#resolve-a-subscription) (using marketplace auth jwt token(from #3) and query string token(#1)) which will respond with a subscription Id.
         6. Then, Page calls the Get on [Subscription endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#gethttpsmarketplaceapimicrosoftcomapisaassubscriptionsapi-versionapiversion) passing the subscription Id to get more details/status of that subscription
         7. Submit button on the landing page will send an email to the Publisher Company Ops team to activate, update or cancel the subscription.
     
+    - Webhook -  Webhook is an url endpoint, where Azure Marketplace can call the publisher to inform the activies performed by the customer outside of landing page. This [activites are listed here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#implementing-a-webhook-on-the-saas-service). An example flow for delete would look like below
+        1. Customer deletes SaaS offer
+        2. Publisher Webhook gets a notification
+        3. Validate the AUTH token on that request
+        4. Ideally store the notification and have some mechanisum to bubble up like a email notification
+        4. Perform the required action on your solution you have provided to the customer(In this case would be blocking the customer access to your SaaS solution)
+        5. Send a PATCH request back to [Marketplace Operation API](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#operations-api) with Success/Failure status 
+           
     - Dashboard Admin page
+    Dashboard admin page is used to manage all the your cusotmers subscriptions. Intent of the customer activates can come through below ways
+        1. Email from customer to ACTIVATE a subscirption
+        2. Email from customer to CHANGE PLAN on a subscirption
+        3. Email from customer to UNSUBSCRIBE
+        4. WEBHOOK(the )
     
-    - Webhook
+    
 
 
 
