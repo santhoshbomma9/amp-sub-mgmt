@@ -56,7 +56,7 @@ On a high level below are things we need to be addressed to publish and sell a S
         4. Perform the required action on your solution you have provided to the customer(In this case would be blocking the customer access to your SaaS solution)
         5. Send a PATCH request back to [Marketplace Operation API](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#operations-api) with Success/Failure status 
            
-    - **Dashboard Admin page** - Dashboard admin page is for your Ops team to manage all the your customers subscriptions. Publisher can list, get, update/patch, delete, check the status of an operation, view opertations from webhook, patch operations and send usage of metered dimension for a subscirption. Intent of the customer activates can come through below ways
+    - **Dashboard Admin page** - Dashboard admin page is for your Ops team to manage all the your customers subscriptions. Publisher can list, get, update/patch, delete, check the status of an operation, view opertations from webhook, patch operations and [send usage of metered dimension](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/saas-metered-billing) for a subscirption. Intent of the customer activates can come through below ways
         1. LANDING PAGE Email from customer to ACTIVATE a subscirption
         2. LANDING PAGE Email from customer to CHANGE PLAN on a subscirption
         3. LANDING PAGE Email from customer to UNSUBSCRIBE
