@@ -35,11 +35,11 @@ On a high level below are things we need to be addressed to publish and sell a S
         - flat rate + monthly/yearly + (optional meter_billing or 30 day free trial)
         - per user + monthly/yearly + (optional 30 day free trial)
 
-3. **Technical requirements**
+3. :small_red_triangle_down:**Technical requirements**
 
-    - **Azure Ad application registration** - This is a single tenant app and the details(TenantId and AppId) are used in the Technical configuration section when creating a SaaS Offer. You will need this to get the [marketplace authorization token](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-registration#get-a-token-based-on-the-azure-ad-app) and use in it the authorization header for calling the [Marketplace fulfilment api](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2), be it from Landing page or Dashboard admin page. This token is like the password to call the [Marketplace fulfilment api](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2)
+    - :red_circle:**Azure Ad application registration** - This is a single tenant app and the details(TenantId and AppId) are used in the Technical configuration section when creating a SaaS Offer. You will need this to get the [marketplace authorization token](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-registration#get-a-token-based-on-the-azure-ad-app) and use in it the authorization header for calling the [Marketplace fulfilment api](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2), be it from Landing page or Dashboard admin page. This token is like the password to call the [Marketplace fulfilment api](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2)
 
-    - **Landing page** - A [multi-tenant authenticated webpage](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-convert-app-to-be-multi-tenant) for customer to send email of managing their subscription to the Publisher Company Ops team.
+    - :red_circle:**Landing page** - A [multi-tenant authenticated webpage](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-convert-app-to-be-multi-tenant) for customer to send email of managing their subscription to the Publisher Company Ops team.
         1. Customer would be redirected to landing page along with query string (e.g ?token=121212121), this token is kind of what represents that customers subscirption
         2. Customer login's to the landing page(using multi-tenant authentication flow), customer is authenticated
         3. After login:
@@ -48,7 +48,7 @@ On a high level below are things we need to be addressed to publish and sell a S
         6. Then, Page calls the Get on [Subscription endpoint](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#gethttpsmarketplaceapimicrosoftcomapisaassubscriptionsapi-versionapiversion) passing the subscription Id to get more details/status of that subscription
         7. Submit button on the landing page will send an email to the Publisher Company Ops team to activate, update or cancel the subscription.
     
-    - **Webhook** -  Webhook is an url endpoint provided by the publisher, where Azure Marketplace can call the publisher to inform the activies/actions performed by the customer outside of landing page. This [activites/actions are listed here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#implementing-a-webhook-on-the-saas-service). An example flow for delete would look like below
+    - :red_circle:**Webhook** -  Webhook is an url endpoint provided by the publisher, where Azure Marketplace can call the publisher to inform the activies/actions performed by the customer outside of landing page. This [activites/actions are listed here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#implementing-a-webhook-on-the-saas-service). An example flow for delete would look like below
         1. Customer deletes SaaS offer
         2. Publisher Webhook gets a notification
         3. Validate the AUTH token on that request
@@ -56,7 +56,7 @@ On a high level below are things we need to be addressed to publish and sell a S
         4. Perform the required action on your solution you have provided to the customer(In this case would be blocking the customer access to your SaaS solution)
         5. Send a PATCH request back to [Marketplace Operation API](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2#operations-api) with Success/Failure status 
            
-    - **Dashboard Admin page** - Dashboard admin page is for your Ops team to manage all the your customers subscriptions. Publisher can list, get, update/patch, delete, check the status of an operation, view opertations from webhook, patch operations and [send usage of metered dimension](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/saas-metered-billing) for a subscirption. Intent of the customer activates can come through below ways
+    - :red_circle:**Dashboard Admin page** - Dashboard admin page is for your Ops team to manage all the your customers subscriptions. Publisher can list, get, update/patch, delete, check the status of an operation, view opertations from webhook, patch operations and [send usage of metered dimension](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/saas-metered-billing) for a subscirption. Intent of the customer activates can come through below ways
         1. LANDING PAGE Email from customer to ACTIVATE a subscirption
         2. LANDING PAGE Email from customer to CHANGE PLAN on a subscirption
         3. LANDING PAGE Email from customer to UNSUBSCRIBE
