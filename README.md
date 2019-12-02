@@ -1,4 +1,4 @@
-# Azure Marketplace SaaS Offer Integration Sample Application
+# Azure Marketplace SaaS Offer Integration Sample Application (WORK IN PROGRESS)
 
 ## Simple Disclaimer
 **This application is a sample only and must be treated that way. It is NOT a production level code. It is written for my personal use.**  
