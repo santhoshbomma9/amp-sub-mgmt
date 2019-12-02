@@ -106,11 +106,13 @@ def edit(subscriptionid):
         selected_subscription = subscriptionid
  
         if 'activate' in request.form:
-            selected_plan = request.form['subscription_plan_id']
-            response = amprepo.activate_subscriptionplan(selected_subscription, selected_plan)
+            selected_plan = request.form.get('subscription_plan_id')
+            selected_quantity = request.form.get('subscription_activate_quantity', '')
+            response = amprepo.activate_subscriptionplan(selected_subscription, selected_plan, selected_quantity)
         elif 'update' in request.form:
-            selected_plan = request.form['selectedplan']
-            response = amprepo.update_subscriptionplan(selected_subscription, selected_plan)
+            update_key = request.form.get('update')
+            update_value = request.form.get(request.form.get('update'))
+            response = amprepo.update_subscriptionplan(selected_subscription, update_key, update_value)
         else:
             return redirect(url_for(constant.ERROR_PAGE))
 

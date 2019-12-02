@@ -27,15 +27,16 @@ def get_availableplans(subscription_id):
     return availableplans
 
 
-def activate_subscriptionplan(subscription_id, plan_id):
-    request_plan_payload = f"{{'planId':'{plan_id}', 'quantity': '' }}"
+def activate_subscriptionplan(subscription_id, plan_id, quantity):
+    request_plan_payload = f"{{'planId':'{plan_id}', 'quantity': '{quantity}' }}"
+    print(request_plan_payload)
     activateresponse = call_marketplace_api(constant.ACTIVATE_SUBSCRIPTION_ENDPOINT(subscription_id),
     'POST', request_plan_payload)
     return activateresponse
 
 
-def update_subscriptionplan(subscription_id, plan_id):
-    request_plan_payload = f"{{'planId': '{plan_id}'}}"
+def update_subscriptionplan(subscription_id, update_key, update_value):
+    request_plan_payload = f"{{'{update_key}': '{update_value}' }}"
     updateresponse = call_marketplace_api(constant.UPDATE_SUBSCRIPTION_ENDPOINT(subscription_id), 'PATCH', request_plan_payload)
 
     updateresponseheaders = updateresponse.headers
@@ -53,7 +54,7 @@ def update_subscriptionplan(subscription_id, plan_id):
                                'updatedtime': operation_datetime,
                                'SubscriptionId': subscription_id_returned,
                                'OperationId': operation_id,
-                               'ToPlan': plan_id}
+                               update_key: update_value}
             utils._store_in_azure_table(app_config.ISV_OPS_STORAGE_TABLE_NAME, request_payload)
         else:
             return redirect(url_for(constant.ERROR_PAGE), user=session["user"])
