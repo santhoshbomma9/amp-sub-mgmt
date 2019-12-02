@@ -131,64 +131,32 @@ def _get_azure_table_service():
 
 
 def _get_activate_email_body(subscription):
-    return ("<table border='1' cellpadding='20' cellspacing='0' width='100%' id='emailHeader'>"
-            "<tr>"
-            "<td align='center' valign='top'>Id</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('id')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Name</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('name')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>OfferId</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('offerId')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>PlanId</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('planId')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Quantity</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('quantity')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Beneficiary</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('beneficiary')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Purchaser</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('purchaser')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>AllowedCustomerOperations</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('allowedCustomerOperations')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>IsFreeTrial</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('isFreeTrial')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Status</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('status')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Term</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('term')) + "</td>"
-            "</tr>"
-            "</table>"
-            "<br>"
-            )
+    email_body = "<table border='1' cellpadding='5' cellspacing='0' id='emailHeader'>"
+    for key in subscription:
+        email_body += ("<tr><td align='center' valign='top'>" + str(key) + "</td>"
+                       "<td valign='top'>" + str(subscription.get(key)) + "</td></tr>")
+    email_body += "</table><br>"
+    print(email_body)
+    return email_body
 
 
 def _get_update_email_body(subscription, to_plan):
-    return ("<table border='1' cellpadding='20' cellspacing='0' width='100%' id='emailHeader'>"
-            "<tr>"
-            "<td align='center' valign='top'>Id</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('id')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Name</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('name')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>OfferId</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('offerId')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Current PlanId</td>"
-            "<td align='center' valign='top'>" + str(subscription.get('planId')) + "</td>"
-            "</tr><tr>"
-            "<td align='center' valign='top'>Upgrade To Plan</td>"
-            "<td align='center' valign='top'>" + str(to_plan) + "</td>"
-            "</tr>"
-            "</table>"
-            "<br>"
-            )
+    email_body = "<table border='1' cellpadding='5' cellspacing='0' id='emailHeader'>"
+    for key in subscription:
+        email_body += ("<tr><td align='center' valign='top'>" + str(key) + "</td>"
+                       "<td valign='top'>" + str(subscription.get(key)) + "</td></tr>")
+        email_body += ("<tr><td align='center' valign='top'>Upgrade To Plan</td>"
+        "<td valign='top'>" + str(to_plan) + "</td></tr>")
+    email_body += "</table><br>"
+    print(email_body)
+    return email_body
+
+
+def _get_webhook_email_body(request_payload):
+    email_body = "<table border='1' cellpadding='5' cellspacing='0' id='emailHeader'>"
+    for key in request_payload:
+        email_body += ("<tr><td align='center' valign='top'>" + str(key) + "</td>"
+                       "<td valign='top'>" + str(request_payload.get(key)) + "</td></tr>")
+    email_body += "</table><br>"
+    print(email_body)
+    return email_body

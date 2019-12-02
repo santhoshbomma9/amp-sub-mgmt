@@ -228,12 +228,27 @@ def updateoperation(operationid):
 def webhook():
 
     try:
-        utils._validate_jwt_token(request.headers.get('Authorization'))
+        #utils._validate_jwt_token(request.headers.get('Authorization'))
         # connect to table storage
         request_payload = request.get_json(force=True)
-        request_payload["PartitionKey"] = request_payload['subscriptionId']
-        request_payload["RowKey"] = request_payload['id']
+        request_payload["PartitionKey"] = request_payload.get('subscriptionId')
+        request_payload["RowKey"] = request_payload.get('id')
         utils._store_in_azure_table(app_config.WEBHOOK_OPS_STORAGE_TABLE_NAME, request_payload)
+        
+        subject = 'Webhook notification for Subscription '+ request_payload.get('subscriptionId')
+        email_body = utils._get_webhook_email_body(request_payload)
+        message = Mail(
+            from_email=app_config.SENDGRID_FROM_EMAIL,
+            to_emails=app_config.SENDGRID_TO_EMAIL,
+            subject=subject,
+            html_content=email_body)
+        try:
+            sendgrid_client = SendGridAPIClient(app_config.SENDGRID_APIKEY)
+            response = sendgrid_client.send(message)
+            flash(f'{response.status_code} Message sent successfully')
+        except Exception as e:
+            flash(e.message, 'error')
+
         return jsonify(), 201
     except Exception as e:
         app.logger.error(e)
@@ -258,14 +273,15 @@ def landingpage():
         id_string = 'id'
         if 'activate' in request.form:
             selected_plan = request.form['subscription_plan_id']
-            subject = f'New activation request for {subscription_data.get(id_string)}'
+            subject = f'New activation request for Subscription {subscription_data.get(id_string)}'
             email_body = utils._get_activate_email_body(subscription_data)
         elif 'update' in request.form:
             selected_plan = request.form['selectedplan']
-            subject = f'UPDATE request for {subscription_data.get(id_string)}'
+            subject = f'UPDATE request for Subscription {subscription_data.get(id_string)}'
             email_body = utils._get_update_email_body(subscription_data, selected_plan)
 
         email_body += "<br> Go to <a href=" + url_for('login', _external=True) + ">Dashboard</a>"
+        
         message = Mail(
             from_email=app_config.SENDGRID_FROM_EMAIL,
             to_emails=app_config.SENDGRID_TO_EMAIL,
