@@ -81,7 +81,7 @@ def authorized():
             return "Login failure: %s, %s" % (
                 result["error"], result.get("error_description"))
         session["user"] = result.get("id_token_claims")
-        session["isadmin"] = app_config.TENANT_ID in session["user"]['iss']
+        session["isadmin"] = "@microsoft.com" in result.get("id_token_claims")['preferred_username']
         utils._save_cache(cache)
     return redirect(url_for("login"))
 
