@@ -40,10 +40,7 @@ The repository contains these files.
 Familiarity with Python is required. You must also have the following:
 
 - [Microsoft Partner Center account](https://partner.microsoft.com/en-us/dashboard/home)
-- Partner Center ID
-- Partner Center AppId
-- Azure Subscription
-- Azure Active Directory Tenant ID
+- Azure Active Directory app registration
 
 ## Setup
 
