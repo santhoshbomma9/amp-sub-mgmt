@@ -1,0 +1,9 @@
+---
+page_type: sample
+languages:
+- python
+products: 
+- azure
+# Partner Center sample app in Python
+
+The sample contains the components needed to integrate a SaaS solution into the Azure Marketplace.
