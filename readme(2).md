@@ -3,9 +3,7 @@ page_type: sample
 languages:
 - python
 products:
-- Partner Center
-description: "This sample is a basic Python implementation of a SaaS transact app for the Microsoft Partner Center."
-urlFragment: "partner-center-sample-python"
+- azure
 ---
 
 # Partner Center integration sample (Python)
@@ -46,8 +44,10 @@ Familiarity with Python is required. You must also have the following:
 
 You must have a development environment such as Visual Studio Code to edit the code. Install the following code extensions:
 
-- PIP
-- Flask
+1. Install Python (url)
+2. Run this code: 
+**pip install -r requirements.txt**
+3. 
 
 ## Running the sample
 
