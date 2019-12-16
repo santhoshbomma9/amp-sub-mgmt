@@ -42,16 +42,27 @@ Familiarity with Python is required. You must also have the following:
 
 ## Setup
 
-You must have a development environment such as Visual Studio Code to edit the code. Install the following code extensions:
+You must have a development environment such as Visual Studio Code to edit the code. Use below steps to setup:
 
-1. Install Python (url)
-2. Run this code: 
-**pip install -r requirements.txt**
-3. 
+1. Install [Python](https://www.python.org/downloads/)
+2. Create a Virtual Env
+
+    `python -m venv env`  
+    `env\Scripts\activate`
+3. Install requirements
+
+    `pip install -r requirements.txt`
+
+4. Set the required environment variables
+
 
 ## Running the sample
 
-The sample can be deployed on Azure as a Web App, or by running it on a Virtual Machine.  
+Local:
+Goto Debug, Select _Python:Flask_ configuration and run
+
+Azure App Service:
+The sample can be deployed on Azure App Service.  
 
 ## Key concepts
 

@@ -17,13 +17,20 @@ app.config.from_object(app_config)
 Session(app)
 requested_url = ''
 
+
+# -----------------------------------------------------------
+# Implement Gunicorn logging
 # https://medium.com/@trstringer/logging-flask-and-gunicorn-the-manageable-way-2e6f0b8beb2f
+# -----------------------------------------------------------
 if __name__ != '__main__':
     gunicorn_logger = logging.getLogger('gunicorn.error')
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
 
 
+# -----------------------------------------------------------
+# Login Decorator
+# -----------------------------------------------------------
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -33,6 +40,9 @@ def login_required(f):
     return decorated_function
 
 
+# -----------------------------------------------------------
+# AdminLogin Decorator
+# -----------------------------------------------------------
 def admin_login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -42,24 +52,33 @@ def admin_login_required(f):
     return decorated_function
 
 
+# -----------------------------------------------------------
+# 404 page handler
+# -----------------------------------------------------------
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template(constant._404_PAGE), 404
 
 
+# -----------------------------------------------------------
+# 500 page handler
+# -----------------------------------------------------------
 @app.errorhandler(500)
 def internal_error(e):
     return render_template(constant._500_PAGE), 500
 
 
+# -----------------------------------------------------------
+# Login page redirect - makes sure the user is logged in
+# -----------------------------------------------------------
 @app.route("/")
 def login():
     if not session.get("user"):
         session["state"] = str(uuid.uuid4())
         auth_url = utils._build_msal_app().get_authorization_request_url(
-                    [],  # openid+profile are included by default
-                    state=session["state"],
-                    redirect_uri=url_for("authorized", _external=True, _scheme=app_config.HTTP_SCHEME))
+                        [],
+                        state=session["state"],
+                        redirect_uri=url_for("authorized", _external=True, _scheme=app_config.HTTP_SCHEME))
         return redirect(auth_url, code=302)
     else:
         global requested_url
@@ -69,7 +88,10 @@ def login():
             return redirect(url_for("dashboard"))
 
 
-@app.route(app_config.REDIRECT_PATH)  # your app's redirect_uri set in AAD
+# -------------------------------------------------------------------------
+# Redirect/callback path, when the login is succesful validated by Azure AD
+# -------------------------------------------------------------------------
+@app.route(app_config.REDIRECT_PATH)
 def authorized():
     if request.args.get('state') == session.get("state"):
         cache = utils._load_cache()
@@ -86,6 +108,9 @@ def authorized():
     return redirect(url_for("login"))
 
 
+# -----------------------------------------------------------
+# Subscription Dashboard page - List all subscriptions
+# -----------------------------------------------------------
 @app.route("/dashboard")
 @login_required
 @admin_login_required
@@ -95,7 +120,9 @@ def dashboard():
     return render_template('index.html', user=session["user"], subscriptions=subscriptions, version=msal.__version__)
 
 
-# todo delete subscription
+# -----------------------------------------------------------
+# Subscription Edit page - update/unsubscribe
+# -----------------------------------------------------------
 @app.route("/edit/<subscriptionid>", methods=['GET', 'POST'])
 @login_required
 def edit(subscriptionid):
@@ -125,6 +152,9 @@ def edit(subscriptionid):
 
 
 
+# --------------------------------------------------------------------
+# Operations page - list all operations from webhook/ISV operations
+# --------------------------------------------------------------------
 @app.route("/operations/<subscriptionid>")
 @login_required
 @admin_login_required
@@ -136,6 +166,10 @@ def operations(subscriptionid):
     return render_template(constant.SUBSCRIPTION_OPERATIONS_PAGE, user=session["user"], subsciptionname=subname, subscriptionid=subscriptionid, operations=sub_operations_by_subid, webhookops=sub_operations_by_webhook, isvops=sub_operations_by_isv)
 
 
+
+# --------------------------------------------------------------------
+# Send Dimension Usage page - send dimension usage - metered billing
+# --------------------------------------------------------------------
 @app.route("/usage/<subscriptionid>", methods=['GET', 'POST'])
 @login_required
 @admin_login_required
@@ -196,8 +230,10 @@ def usage(subscriptionid):
     return render_template(constant.SEND_DIMENSION_USAGE_PAGE, user=session["user"], data=get_data)
 
 
-# todo change quantity
-# need to save the response
+
+# --------------------------------------------------------------------
+# Operation Edit page - update success/failure
+# --------------------------------------------------------------------
 @app.route("/updateoperation/<operationid>", methods=['GET', 'POST'])
 @login_required
 @admin_login_required
@@ -224,12 +260,14 @@ def updateoperation(operationid):
     return render_template("suboperationmanage.html", user=session["user"], operationid=operationid,subid=subid, planid=planid, quantity=quantity, subsciptionname=subsciptionname)
 
 
+# --------------------------------------------------------------------
+# Webhook Ednpoint to receive notifications
+# --------------------------------------------------------------------
 @app.route("/webhook", methods=['POST'])
 def webhook():
 
     try:
-        #utils._validate_jwt_token(request.headers.get('Authorization'))
-        # connect to table storage
+        utils._validate_jwt_token(request.headers.get('Authorization'))
         request_payload = request.get_json(force=True)
         request_payload["PartitionKey"] = request_payload.get('subscriptionId')
         request_payload["RowKey"] = request_payload.get('id')
@@ -255,6 +293,9 @@ def webhook():
         return jsonify("An exception occurred"), 500
 
 
+# --------------------------------------------------------------------
+# Landing page
+# --------------------------------------------------------------------
 @app.route("/landingpage", methods=['GET', 'POST'])
 @login_required
 def landingpage():
@@ -336,7 +377,6 @@ def logout():
 @app.before_request
 def before_request_func():
     global requested_url
-    app.logger.info('Requested Endpoint ' +request.endpoint)
     auth_endpoint_list = ['authorized', 'login', 'webhook']
     if not session.get("user") and request.endpoint not in auth_endpoint_list:
         requested_url = request.url
