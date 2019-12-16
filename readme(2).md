@@ -56,6 +56,27 @@ You must have a development environment such as Visual Studio Code to edit the c
 4. Set the required environment variables
 
 
+| KEY           | VALUE       |
+| ------------- |-------------|
+| TENANT_ID     | `Multi Tenant App Azure AD App Registration` |
+| CLIENT_ID | `Multi Tenant App Azure AD App Registration`  |
+| CLIENT_SECRET  | `Multi Tenant App Azure AD App Registration`  |
+| MARKETPLACEAPI_TENANTID | `Single Tenant App Azure AD App Registration`  |
+| MARKETPLACEAPI_CLIENT_ID | `Single Tenant App Azure AD App Registration`  |
+| MARKETPLACEAPI_CLIENT_SECRET | `Single Tenant App Azure AD App Registration`  |
+| STORAGE_CONNECTION_STRING | `Coneection string for Azure Storage` |
+| WEBHOOK_OPS_STORAGE_TABLE_NAME | `Table for Webhook Operations` |
+| ISV_OPS_STORAGE_TABLE_NAME | `Table for ISV Operations` |
+| DIMENSION_USAGE_STORAGE_TABLE_NAME | `Table for Dimension Operations` |
+| MARKETPLACEAPI_API_VERSION | `?api-version=2018-08-31(prod), ?api-version=2018-09-15(mock)` |
+| HTTP_SCHEME | `HTTP / HTTPS` |
+| SENDGRID_APIKEY | `For Notification sending emails` |
+| SENDGRID_FROM_EMAIL | `For Notification sending emails` |
+| SENDGRID_TO_EMAIL | `For Notification sending emails` |
+| Dimension_Data | Hardcoding dimensions e.g. `{"santhosh_saas_test-preview": ["persms"], "contoso_saas_offer-preview": ["persms"]}` |
+
+
+
 ## Running the sample
 
 Local:
