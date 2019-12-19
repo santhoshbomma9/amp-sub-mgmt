@@ -16,7 +16,9 @@ Guidance on onboarding samples to docs.microsoft.com/samples: https://review.doc
 Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
 -->
 
-This sample implements basic functions required to integrate a solution into the [Azure Marketplace](https://azuremarketplace.microsoft.com) or [Microsoft AppSource](https://appsource.microsoft.com). The sample is written in Python, and provides the basic code that communicates to the marketplace using REST APIs.
+This sample implements basic functions required to integrate a transactable  SaaS solution into the [Azure Marketplace](https://azuremarketplace.microsoft.com) or [Microsoft AppSource](https://appsource.microsoft.com). The sample is written in Python, and provides the basic code that communicates to the marketplace using REST APIs.
+Offer types are described in [Azure and AppSource market offers](
+https://docs.microsoft.com/azure/marketplace/cloud-partner-portal/cpp-marketplace-offers)
 
 ## Contents
 
@@ -88,6 +90,11 @@ The sample can be deployed on Azure App Service.
 ## Key concepts
 
 See the [SaaS fulfillment APIs, version 2](https://docs.microsoft.com/azure/marketplace/partner-center-portal/pc-saas-fulfillment-api-v2)
+The sample shows how to implement the three required components of a transactable SaaS app.
+
+1. Landing page: Where a new subscriber configures the app.
+2. Web hook: Allows the app to receive messages from the Azure Marketplace.
+3. Dashboard: The UI for the app. 
 
 ## Contributing
 
