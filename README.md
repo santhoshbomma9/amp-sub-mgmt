@@ -1,19 +1,25 @@
-# Azure Marketplace SaaS Offer Integration Sample Application (WORK IN PROGRESS)
+# Azure Marketplace SaaS Offer Sample Application (WORK IN PROGRESS)
 
-## Simple Disclaimer
+This application demonstrates the applicaiton characteristics needed for a SaaS application to function through the Azure Marketplace. This sample provides the experience of installing the application as a transactable SaaS offer and then understanding how its various features work that integrate with the Azure marketplace. 
+
+## Disclaimer
+
 **This application is a sample only and must be treated that way. It is NOT a production level code. It is written for my personal use.**  
 
 ## SaaS Offer background
-If you are here and wondering what this sample is all about, please continue to read otherwise feel free to skip and continue to the next section. The intended audience for this sample is a **Company(Independent Software Vendor/Publisher)** who ideally have or going to have a [SaaS](https://azure.microsoft.com/en-us/overview/what-is-saas/) and want to sell it to their customers. 
-One of the cloud selling markets to sell a [SaaS](https://azure.microsoft.com/en-us/overview/what-is-saas/) is [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/) and you can use Azure Marketplace store front to sell your SaaS application to your customers. Find more information on [Azure Marketplace here](https://docs.microsoft.com/en-us/azure/marketplace/). When you are selling your SaaS on Azure Marketplace, Microsoft helps deal with the transactions. [Benefits of selling through Commercial Marketplace](https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide#commercial-marketplace-benefits). 
 
-To sell anything on Azure Marketplace you would need to create an offer in [Partner Center](http://partner.microsoft.com/)/[Partner Portal](http://cloudpartner.azure.com/) and publish to Azure marketplace. If you are not already on Azure Marketplace, [please find more information here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/create-account) .
+If you are here and wondering what this sample is all about, please continue to read. Otherwise feel free to skip and continue to the next section. The intended audience for this sample is a **Company(Independent Software Vendor/Publisher)** who have or will have a [SaaS](https://azure.microsoft.com/en-us/overview/what-is-saas/) application and want to sell it to their customers. 
 
-There are [many types of offers](https://docs.microsoft.com/en-us/azure/marketplace/publisher-guide-by-offer-type) you can create, publish and sell on Azure Marketplace and SaaS offering happens to be one of them. When you create different types of offers there are different requirements which needs to be fulfilled to successfully publish it to public.
+One of the cloud selling markets to sell a SaaS application is through the [Azure marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/) and you can use Azure marketplace store front to sell your SaaS application to your customers. When you are selling your SaaS on Azure marketplace, Microsoft helps deal with the transactions as one of the [benefits of selling through Commercial Marketplace](https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide#commercial-marketplace-benefits). 
 
-As this sample is a requirement for creating a SaaS offer, we will only talk about SaaS offering but if you like you can view the information-about/requirements for different offerings [here](https://docs.microsoft.com/en-us/azure/marketplace/publisher-guide-by-offer-type). Please read more about [SaaS offer on Azure Marketplace here](https://docs.microsoft.com/en-us/azure/marketplace/marketplace-saas-applications-technical-publishing-guide).
+_OLD_
+_To sell anything on Azure Marketplace you would need to create an offer in [Partner Center](http://partner.microsoft.com/) and [Partner Portal](http://cloudpartner.azure.com/), two portals and publish to Azure marketplace. If you are not already on Azure Marketplace, [please find more information here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/create-account) . 
+_
 
-You would need to follow [SaaS offer checklist here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/offer-creation-checklist) to create one. 
+NEW
+**To sell anything on Azure Marketplace you need to create an offer in [Partner Center](http://partner.microsoft.com/) a portal used to configure your software offer for publishing to Azure marketplace. If you are not already on Azure Marketplace, [please find more information here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/create-account).**
+
+First, follow [SaaS offer checklist here](https://docs.microsoft.com/en-us/azure/marketplace/partner-center-portal/offer-creation-checklist) to prepare to create a SaaS offer in the Partner Center portal. 
 
 On a high level below are things we need to be addressed to publish and sell a SaaS offer.
 1. Complete Tax profile and Payout
